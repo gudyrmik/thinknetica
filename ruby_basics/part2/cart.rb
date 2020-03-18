@@ -1,5 +1,5 @@
 
-cart = Hash.new
+cart = {}
 
 loop do
   puts 'Product:'
