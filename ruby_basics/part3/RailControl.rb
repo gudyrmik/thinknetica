@@ -4,15 +4,8 @@ class Station
     @title = title
     @all_trains = []
   end
-  def get_trains(type = 'all')
-    case type
-    when 'all'
-      all_trains.each { |train| puts "#{train}" }
-    when 'cargo'
-      all_trains.each { |train| puts "#{train}" if train.type == 'cargo' }
-    when 'passenger'
-      all_trains.each { |train| puts "#{train}" if train.type == 'passenger' }
-    end
+  def trains_by_type(type)
+    all_trains.select { |train| train.type == type }
   end
   def accept_train(train)
     @all_trains << train
@@ -62,26 +55,24 @@ class Train
     @route = route
     @route.source.accept_train(self)
   end
-  def move(direction)
-    current_station_index = -1
-    @route.stations.each do |station|
-      current_station_index = @route.stations.index(station) if station.all_trains.include?(self)
-      break if current_station_index != -1
+  def get_current_station
+    @route.stations.find { |station| station.all_trains.include?(self) }
+  end
+  def get_current_station_index
+    @route.stations.index(get_current_station)
+  end
+  def move_forward
+    next_station = @route.stations[get_current_station_index + 1]
+    if next_station != nil
+      get_current_station.dispatch_train(self)
+      next_station.accept_train(self)
     end
-    # вопрос - как написать этот блок по-человечески (на Руби:))?
-    # нутром чую что Сишная конструкция вида переменная сверху и вычисляющий цикл
-    # ниже в Руби можно написать красиво, но не соображу:(
-    break if current_station_index == -1
-    case direction
-    when 'forward'
-      if current_station_index + 1 < @route.stations.size - 1
-        @route.stations[current_station_index].dispatch_train(self)
-        @route.stations[current_station_index + 1].accept_train(self)
-      end
-    when 'backward'
-      if current_station_index - 1 >= 0
-        @route.stations[current_station_index].dispatch_train(self)
-        @route.stations[current_station_index - 1].accept_train(self)
+  end
+  def move_backward
+    prev_station = @route.stations[get_current_station_index - 1]
+    if prev_station != nil
+      get_current_station.dispatch_train(self)
+      prev_station.accept_train(self)
     end
   end
 end
