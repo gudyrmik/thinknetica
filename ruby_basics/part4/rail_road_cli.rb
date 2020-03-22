@@ -1,0 +1,205 @@
+class RailRoadCLI
+
+  def main_menu_cli
+    loop do
+      puts 'Введите номер операции:'
+      puts ' [1] для управления Ж/Д станциями'
+      puts ' [2] для управления поездами'
+      puts ' [3] для управления маршрутами'
+      puts ' [4] для получения информации о всех Ж/Д объектах'
+      puts ' [0] для выхода из программы'
+      print COMMAND_PROMPT
+      input = gets.chomp.to_i
+
+      case input
+      when 1
+        stations_menu_cli
+      when 2
+        trains_menu_cli
+      when 3
+        routes_menu_cli
+      when 4
+        info_menu_cli
+      when 0
+        break
+      end
+    end
+  end
+
+  def print_stations
+    puts @rail_road.stations_to_s
+  end
+
+  def print_trains
+    puts @rail_road.trains_to_s
+  end
+
+  def print_routes
+    puts @rail_road.routes_to_s
+  end
+
+  private
+
+  COMMAND_PROMPT = '>_: '
+
+  def initialize
+    @rail_road = RailRoad.new
+  end
+
+  # методы подменюшки в паблике не нужны
+  # не нужны и принт-методы, но их там оставить как-то выгляждит логичнее
+  def stations_menu_cli
+    loop do
+      puts 'Панель управления Ж/Д станциями. Введите номер подоперации:'
+      puts ' [1] для создания новой Ж/Д станции'
+      puts ' [2] для удалений Ж/Д станции'
+      puts ' [3] для получения списка всех Ж/Д станций'
+      puts ' [0] для возвращения к главной панели'
+      print COMMAND_PROMPT
+      input = gets.chomp.to_i
+
+      case input
+      when 1
+        print 'Введите название станции: '
+        @rail_road.add_station(gets.chomp)
+      when 2
+        print_stations
+        print 'Выберите номер станции для удаления: '
+        @rail_road.remove_station(gets.chomp.to_i)
+      when 3
+        print_stations
+      when 0
+        break
+      end
+    end
+  end
+
+  def trains_menu_cli
+    loop do
+      puts 'Панель управления поездами. Введите номер подоперации:'
+      puts ' [1] для создания нового поезда'
+      puts ' [2] для удаления поезда'
+      puts ' [3] для добавления вагона к поезду'
+      puts ' [4] для отцепления вагона от поезда'
+      puts ' [5] для назначения поезду маршрута'
+      puts ' [6] для движения вперед по маршруту'
+      puts ' [7] для движения назад по маршруту'
+      puts ' [8] для получения списка всех поездов'
+      puts ' [0] для возвращения к главной панели'
+      print COMMAND_PROMPT
+
+      input = gets.chomp.to_i
+
+      case input
+      when 1  # создание нового поезда
+        print 'Введите серийный номер поезда: '
+        serial_number = gets.chomp
+        puts 'Выберите тип поезда:'
+        puts ' [1] пассажирский поезд'
+        puts ' [2] грузовой поезд'
+        print COMMAND_PROMPT
+        case gets.chomp.to_i
+        when 1  # выбор типа нового поезда - пассажирский
+          @rail_road.add_passenger_train(serial_number)
+        when 2  # выбор типа нового поезда - грузовой
+          @rail_road.add_cargo_train(serial_number)
+        end
+      when 2  # удаление поезда
+        print_trains
+        print 'Выберете номер поезда для удаления: '
+        @rail_road.remove_train(gets.chomp.to_i)
+      when 3  # добавление вагона к поезду
+        print_trains
+        print 'Выберете номер поезда, к которому добавить вагон: '
+        @rail_road.add_car_to_train(gets.chomp.to_i)
+      when 4  # отцепление вагонов от поезда
+        print_trains
+        print 'Выберете номер поезда, от которого отцепить вагон: '
+        @rail_road.remove_car_from_train(gets.chomp.to_i)
+      when 5  # назначение маршрута поезду
+        puts 'Поезда:'
+        print_trains
+        puts 'Маршруты:'
+        print_routes
+        print 'Выберете номер поезда: '
+        train_number = gets.chomp.to_i
+        print 'Выберете номер маршрута: '
+        route_number = gets.chomp.to_i
+        @rail_road.assign_train_on_route(train_number, route_number)
+      when 6  # движение вперед по маршруту
+        @rail_road.print_trains
+        print 'Выберете номер поезда: '
+        @rail_road.train_move_forward(gets.chomp.to_i)
+      when 7  # движение назад по маршруту
+        print_trains
+        print 'Выберете номер поезда: '
+        @rail_road.train_move_backward(gets.chomp.to_i)
+      when 8  # вывод списка поездов
+        print_trains
+      when 0
+        break
+      end
+    end
+  end
+
+  def routes_menu_cli
+    loop do
+      puts 'Панель управления маршрутами. Введите номер подоперации:'
+      puts ' [1] для создания нового маршрута'
+      puts ' [2] для удаления маршрута'
+      puts ' [3] для добавления промежуточной станции к маршруту'
+      puts ' [4] для удаления промежуточной станции из марщрута'
+      puts ' [5] для получения списка всех маршрутов'
+      puts ' [0] для возвращения к главной панели'
+      print COMMAND_PROMPT
+      input = gets.chomp.to_i
+
+      case input
+      when 1  # создание нового маршрута
+        print_stations
+        print 'Введите номер станции отправления: '
+        source_number = gets.chomp.to_i
+        print 'Введите номер станции назначения: '
+        destination_number = gets.chomp.to_i
+        @rail_road.add_route(source_number, destination_number)
+      when 2  # удаление маршрута
+        print_routes
+        print 'Выберете номер маршрута для удаления: '
+        @rail_road.remove_route(gets.chomp.to_i)
+      when 3  # добавление станции к маршруту
+        puts 'Станции:'
+        print_stations
+        puts 'Маршруты:'
+        print_routes
+        print 'Выберете номер маршрута: '
+        route_number = gets.chomp.to_i
+        print 'Выберете номер станции: '
+        station_number = gets.chomp.to_i
+        @rail_road.add_station_to_route(station_number, route_number)
+      when 4  # удаление станции из маршрута
+        puts 'Станции:'
+        print_stations
+        puts 'Маршруты:'
+        print_routes
+        print 'Выберете номер маршрута: '
+        route_number = gets.chomp.to_i
+        print 'Выберете номер станции: '
+        station_number = gets.chomp.to_i
+        @rail_road.remove_station_from_route(station_number, route_number)
+      when 5  # получение списка маршрутов
+        print_routes
+      when 0
+        break
+      end
+    end
+  end
+
+  def info_menu_cli
+    puts 'Станции:'
+    print_stations
+    puts 'Поезда:'
+    print_trains
+    puts 'Маршруты:'
+    print_routes
+  end
+end

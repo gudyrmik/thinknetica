@@ -18,8 +18,10 @@ class RailRoad
     @stations.delete_at(station_number - 1)
   end
 
-  def list_stations
-    @stations.each_with_index { |station, index| puts "[#{index + 1}] - #{station.to_s}" }
+  def stations_to_s
+    str = ''
+    @stations.each_with_index { |station, index| str += "[#{index + 1}] - #{station.to_s}\n" }
+    str
   end
 
   def add_passenger_train(serial_number)
@@ -34,8 +36,10 @@ class RailRoad
     @trains.delete_at(train_number - 1)
   end
 
-  def list_trains
-    @trains.each_with_index { |train, index| puts "[#{index + 1}] - #{train.to_s}" }
+  def trains_to_s
+    str = ''
+    @trains.each_with_index { |train, index| str += "[#{index + 1}] - #{train.to_s}\n" }
+    str
   end
 
   def add_car_to_train(train_number)
@@ -58,8 +62,10 @@ class RailRoad
     @routes.delete_at(route_number - 1)
   end
 
-  def list_routes
-    @routes.each_with_index { |route, index| puts "[#{index + 1}] - #{route.to_s}" }
+  def routes_to_s
+    str = ''
+    @routes.each_with_index { |route, index| str += "[#{index + 1}] - #{route.to_s}\n" }
+    str
   end
 
   def add_station_to_route(station_number, route_number)

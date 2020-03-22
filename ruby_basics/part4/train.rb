@@ -44,7 +44,7 @@ class Train
   end
 
   def to_s
-    @serial_number.to_s + ', type: ' + type.to_s + ' cars: ' + @cars_number.to_s
+    @serial_number.to_s + ', type: ' + type.to_s + ', cars: ' + @cars_number.to_s + ', route: ' + @route.to_s
   end
 
   private
