@@ -6,7 +6,7 @@ module TestModule
 
   module ClassMethods
     def get_classInstanceVar2
-      @classInstanceVar2
+      @classInstanceVar2 ||= 0
     end
 
     def set_classInstanceVar2(v)
@@ -22,10 +22,8 @@ module TestModule
 end
 
 class A
-  @classInstanceVar2 = 100
   include TestModule
 end
 
 class B < A
-  @classInstanceVar2 = 200
 end

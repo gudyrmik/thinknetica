@@ -8,7 +8,6 @@ class Train
   attr_reader :serial_number, :type, :route
 
   @@obj_references = []
-  @instances = 0
 
   def self.find(serial_number)
     @@obj_references.select { |train| train.serial_number == serial_number}

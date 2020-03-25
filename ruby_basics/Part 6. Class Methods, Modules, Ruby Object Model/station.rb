@@ -3,8 +3,6 @@ require_relative 'instance_counter.rb'
 class Station
   include InstanceCounter
 
-  @instances = 0
-
   attr_reader :title, :trains
 
   def self.all
