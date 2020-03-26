@@ -1,0 +1,54 @@
+require_relative 'instance_counter.rb'
+
+class Station
+  include InstanceCounter
+
+  attr_reader :title, :trains
+
+  def valid?
+    validation_check
+    true
+  rescue
+    false
+  end
+
+  def self.all
+    @@obj_references
+  end
+  
+  def initialize(title)
+    @title = title
+    validation_check
+    @trains = []
+    @@obj_references << self
+    register_instance
+  end
+  
+  def trains_by_type(type)
+    trains.select { |train| train.type == type }
+  end
+  
+  def accept_train(train)
+    @trains << train
+  end
+  
+  def dispatch_train(train)
+    @trains.delete(train)
+  end
+
+  def to_s
+    str = "#{@title}"
+    @trains.each { |train| str += "\n #{train.to_s} " }
+    str.chomp
+  end
+
+  private
+
+  TITLE_REGEXP = /^[A-Z]{1}[a-z0-9]+$/
+
+  def validation_check
+    raise 'Invalid station name' if @title !~ TITLE_REGEXP || @title.nil?
+  end
+
+  @@obj_references = []
+end

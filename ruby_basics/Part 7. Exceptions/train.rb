@@ -58,9 +58,34 @@ class Train
     @serial_number.to_s + ', type: ' + type.to_s + ', cars: ' + @cars_number.to_s + ', route: ' + @route.to_s
   end
 
+  def valid?
+    validation_check
+    true
+  rescue
+    false
+  end
+
+  def initialize(serial_number, type)
+    @serial_number = serial_number
+    @type = type.to_sym
+    validation_check
+    @cars = []
+    @cars_number = 0
+    @speed = 0
+    @@obj_references << self
+    register_instance
+  end
+
   private
   # Для обоих полей есть кастомная гет/сет пара, дефолтный геттер нужен только для внутреннй логики
   attr_reader :speed, :cars
+
+  SERIAL_REGEXP = /^[A-Za-z0-9]{3}-?[A-Za-z0-9]{2}$/
+
+  def validation_check
+    raise 'Invalid serial number' if @serial_number !~ SERIAL_REGEXP || @serial_number.nil?
+    raise 'Unknown train type' if @type != :cargo
+  end
 
   # Нужен только для методов движения
   def get_current_station
@@ -70,20 +95,6 @@ class Train
   # Нужен только для методов движения
   def get_current_station_index
     @route.stations.index(get_current_station)
-  end
-
-  # Конструктор для "абстрактного" класса поезда в паблике не нужен
-  # API железной дороги работает с определенными типами поездов
-  # (есть ли в Руби классические абстрактные классы?
-  # ну у которых нет паблик-конструктора и которые нужны для наследования от них)
-  def initialize(serial_number, type)
-    @serial_number = serial_number
-    @type = type
-    @cars = []
-    @cars_number = 0
-    @speed = 0
-    @@obj_references << self
-    register_instance
   end
 end
 
