@@ -6,7 +6,7 @@ class Station
   attr_reader :title, :trains
 
   def valid?
-    validation_check
+    validate!
     true
   rescue
     false
@@ -18,7 +18,7 @@ class Station
   
   def initialize(title)
     @title = title
-    validation_check
+    validate!
     @trains = []
     @@obj_references << self
     register_instance
@@ -46,7 +46,11 @@ class Station
 
   TITLE_REGEXP = /^[A-Z]{1}[a-z0-9]+$/
 
-  def validation_check
+  def validate!
+    validate_title
+  end
+
+  def validate_title
     raise 'Invalid station name' if @title !~ TITLE_REGEXP || @title.nil?
   end
 

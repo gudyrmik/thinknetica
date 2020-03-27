@@ -6,7 +6,7 @@ class Route
   attr_reader :stations, :source, :destination
 
   def valid?
-    validation_check
+    validate!
     true
   rescue
     false
@@ -37,7 +37,11 @@ class Route
 
   private
 
-  def validation_check
+  def validate!
+    validate_stations
+  end
+
+  def validate_stations
     @station.each { |station| raise 'Invalid route' if station.valid? == false }
   end
 end

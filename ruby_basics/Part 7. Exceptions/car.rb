@@ -7,11 +7,11 @@ class Car
 
   def initialize(type)
     @type = type
-    validation_check
+    validate!
   end
 
   def valid?
-    validation_check
+    validate!
     true
   rescue
     false
@@ -19,6 +19,10 @@ class Car
 
   private
 
-  def validation_check
+  def validate!
+    validate_car_type
+  end
+
+  def validate_car_type
     raise 'Invalid car type' if @type != :cargo || @type != :passenger || @type.nil?
 end

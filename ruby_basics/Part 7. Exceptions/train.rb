@@ -59,7 +59,7 @@ class Train
   end
 
   def valid?
-    validation_check
+    validate!
     true
   rescue
     false
@@ -68,7 +68,7 @@ class Train
   def initialize(serial_number, type)
     @serial_number = serial_number
     @type = type.to_sym
-    validation_check
+    validate!
     @cars = []
     @cars_number = 0
     @speed = 0
@@ -82,8 +82,16 @@ class Train
 
   SERIAL_REGEXP = /^[A-Za-z0-9]{3}-?[A-Za-z0-9]{2}$/
 
-  def validation_check
+  def validate!
+    validate_number
+    validate_type
+  end
+
+  def validate_number
     raise 'Invalid serial number' if @serial_number !~ SERIAL_REGEXP || @serial_number.nil?
+  end
+
+  def validate_type
     raise 'Unknown train type' if @type != :cargo
   end
 
