@@ -92,7 +92,7 @@ class Train
   end
 
   def validate_type
-    raise 'Unknown train type' if @type != :cargo
+    raise 'Unknown train type' if @type != :cargo || @type != :passenger
   end
 
   # Нужен только для методов движения
