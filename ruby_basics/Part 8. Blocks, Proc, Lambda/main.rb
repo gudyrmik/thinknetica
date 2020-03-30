@@ -14,7 +14,7 @@ t1.assign_route(r1)
 # Не уверен что правильно понял это задание, пинайте:)
 
 puts 'Printing station:'
-s1.task8_method { |train| puts train.to_s }
+s1.each_train { |train| puts train.to_s }
 
 puts 'Printing train:'
-t1.iterate_cars { |car| puts car.to_s}
+t1.each_car { |car| puts car.to_s}

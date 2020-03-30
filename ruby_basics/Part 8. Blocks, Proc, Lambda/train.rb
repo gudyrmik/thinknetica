@@ -9,7 +9,8 @@ class Train
 
   @@obj_references = []
 
-  def iterate_cars
+  def each_car
+    # Так вы не на тот метод смотрели, то рудимент. Вот правильный:)
     @cars.each { |car| yield(car) }
   end
 
@@ -77,14 +78,6 @@ class Train
     @speed = 0
     @@obj_references << self
     register_instance
-  end
-
-  # "У класса Train:
-  # написать метод, который принимает блок и проходит по всем вагонам поезда
-  # (вагоны должны быть во внутреннем массиве), передавая каждый объект вагона в блок."
-  # Не уверен что правильно понимаю что требуется, но согласно описанию, вот:
-  def task8_method(block)
-    @cars.each { |car| block.call(car) }
   end
 
   private
