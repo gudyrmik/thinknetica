@@ -8,6 +8,16 @@ class Car
 
   attr_reader :type, :total_space, :id
 
+  def initialize(type, total_space)
+    self.class.id ||= 0
+    @type = type.to_sym
+    @total_space = total_space
+    @used_space = 0
+    @id = self.class.id
+    self.class.id += 1
+    validate!
+  end
+
   class << self
     attr_accessor :id
   end
@@ -22,16 +32,6 @@ class Car
 
   def free_space
     @total_space - @used_space
-  end
-
-  def initialize(type, total_space)
-    self.class.id ||= 0
-    @type = type.to_sym
-    @total_space = total_space
-    @used_space = 0
-    @id = self.class.id
-    self.class.id += 1
-    validate!
   end
 
   def valid?

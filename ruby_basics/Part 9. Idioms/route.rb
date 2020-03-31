@@ -8,18 +8,18 @@ class Route
 
   attr_reader :stations, :source, :destination
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
   def initialize(source, destination)
     @stations = [source, destination]
     @source = source
     @destination = destination
     register_instance
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
   end
 
   def add_station(station)

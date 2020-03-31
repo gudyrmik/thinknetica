@@ -12,6 +12,16 @@ class Train
 
   @@obj_references = []
 
+  def initialize(serial_number, type)
+    @serial_number = serial_number
+    @type = type.to_sym
+    validate!
+    @cars = []
+    @speed = 0
+    @@obj_references << self
+    register_instance
+  end
+
   def each_car
     # Так вы не на тот метод смотрели, то рудимент. Вот правильный:)
     @cars.each { |car| yield(car) }
@@ -71,16 +81,6 @@ class Train
     true
   rescue StandardError
     false
-  end
-
-  def initialize(serial_number, type)
-    @serial_number = serial_number
-    @type = type.to_sym
-    validate!
-    @cars = []
-    @speed = 0
-    @@obj_references << self
-    register_instance
   end
 
   private

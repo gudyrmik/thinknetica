@@ -8,6 +8,14 @@ class Station
 
   attr_reader :title, :trains
 
+  def initialize(title)
+    @title = title
+    validate!
+    @trains = []
+    @@obj_references << self
+    register_instance
+  end
+
   def valid?
     validate!
     true
@@ -17,14 +25,6 @@ class Station
 
   def self.all
     @@obj_references
-  end
-
-  def initialize(title)
-    @title = title
-    validate!
-    @trains = []
-    @@obj_references << self
-    register_instance
   end
 
   def trains_by_type(type)
