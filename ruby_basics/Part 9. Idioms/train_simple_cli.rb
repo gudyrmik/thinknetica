@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require_relative 'train.rb'
 
+# Simple command line interface for trains
 class TrainSimpleCLI
   def self.run
     loop do

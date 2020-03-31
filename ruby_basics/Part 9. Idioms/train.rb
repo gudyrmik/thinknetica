@@ -30,7 +30,7 @@ class Train
   end
 
   def add_car(car)
-    @cars << car if (speed == 0) && (car.type == @type)
+    @cars << car if speed.zero? && car.type == @type
   end
 
   def remove_car
@@ -47,17 +47,17 @@ class Train
   end
 
   def move_forward
-    next_station = @route.stations[get_current_station_index + 1]
+    next_station = @route.stations[current_station_index + 1]
     unless next_station.nil?
-      get_current_station.dispatch_train(self)
+      current_station.dispatch_train(self)
       next_station.accept_train(self)
     end
   end
 
   def move_backward
-    prev_station = @route.stations[get_current_station_index - 1]
+    prev_station = @route.stations[current_station_index - 1]
     unless prev_station.nil?
-      get_current_station.dispatch_train(self)
+      current_station.dispatch_train(self)
       prev_station.accept_train(self)
     end
   end
@@ -96,9 +96,7 @@ class Train
   end
 
   def validate_number
-    if @serial_number !~ SERIAL_REGEXP || @serial_number.nil?
-      raise 'Invalid serial number'
-    end
+    raise 'Invalid serial number' if @serial_number !~ SERIAL_REGEXP || @serial_number.nil?
   end
 
   def validate_type
@@ -106,13 +104,13 @@ class Train
   end
 
   # Нужен только для методов движения
-  def get_current_station
+  def current_station
     @route.stations.find { |station| station.trains.include?(self) }
   end
 
   # Нужен только для методов движения
-  def get_current_station_index
-    @route.stations.index(get_current_station)
+  def current_station_index
+    @route.stations.index(current_station)
   end
 end
 

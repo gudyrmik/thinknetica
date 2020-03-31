@@ -56,9 +56,7 @@ class RailRoad
   def add_route(source_number, destination_number)
     source = @stations[source_number - 1]
     destination = @stations[destination_number - 1]
-    if !source.nil? && !destination.nil?
-      @routes << Route.new(source, destination)
-    end
+    @routes << Route.new(source, destination) if !source.nil? && !destination.nil?
   end
 
   def remove_route(route_number)

@@ -49,19 +49,13 @@ class Car
   end
 
   def validate_type
-    unless (@type == :cargo) || (@type == :passenger)
-      raise ArgumentError, 'Unknown car type'
-    end
+    raise ArgumentError, 'Unknown car type' unless (@type == :cargo) || (@type == :passenger)
     raise TypeError, 'Car type can\'t be empty' if @type.nil?
   end
 
   def validate_space
-    if @total_space <= 0
-      raise ArgumentError, 'Car space should be have positive value'
-    end
-    if @total_space.class != Integer
-      raise ArgumentError, 'Car space should be integer'
-    end
+    raise ArgumentError, 'Car space should be have positive value' if @total_space <= 0
+    raise ArgumentError, 'Car space should be integer' if @total_space.class != Integer
     raise TypeError, 'Car space can\'t be empty' if @total_space.nil?
   end
 end
